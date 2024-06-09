@@ -1,6 +1,9 @@
-﻿using System;
+﻿using OpenQA.Selenium.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +12,7 @@ namespace BingRewardsAutoSearcher
     internal static class SearchPhrases
     {
 
-        static string[] searchPhrases = {
+        static readonly string[] searchPhrases = {
             "Best pizza near me",
             "How to lose weight",
             "Weather tomorrow",
@@ -162,5 +165,27 @@ namespace BingRewardsAutoSearcher
             "Best Linux distributions"
         };
 
+        internal static string[] Get(int numPhrases = 0)
+        {
+            // Return all phrases if 0. Otherwise, return the number requested.
+            if (numPhrases == 0 ) { return searchPhrases; }
+        
+            return searchPhrases.Take(numPhrases).ToArray();
+        
+        }
+
+        internal static string[] GetRandom(int numPhrases = 0)
+        {
+            // Clone the list of search phrases and then shuffle them.
+            var randomPhrases = (string[])searchPhrases.Clone();
+
+            RandomNumberGenerator.Create();
+            RandomNumberGenerator.Shuffle<string>(randomPhrases);
+
+            // Return all phrases if 0. Otherwise, return the number requested.
+            if (numPhrases == 0 ) { return randomPhrases; }
+
+            return randomPhrases.Take(numPhrases).ToArray();
+        }
     }
 }
