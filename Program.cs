@@ -9,6 +9,10 @@ var profileName = "Default";
 // Modify this to change the number of searches that will occur. Should not exceed the number of available search phrases.
 var searchCount = 30;
 
+// Modify this to configure the desired min/max interval (in seconds) between searches.
+var searchIntervalMinSeconds = 6;
+var searchIntervalMaxSeconds = 17;
+
 Console.WriteLine("Opening Browser");
 
 // Set up browser and open it.
@@ -41,5 +45,9 @@ for (int i = 0; i < searchCount; i++)
     searchBox.SendKeys(searchPhrases[i]);
     searchBox.SendKeys(Keys.Enter);
 
-    Thread.Sleep(6000);
+    // Sleep for a random number of seconds between searches (within a range) to create more natural search patterns.
+    RandomNumberGenerator.Create();
+    var sleepSeconds = RandomNumberGenerator.GetInt32(searchIntervalMinSeconds, searchIntervalMaxSeconds);
+
+    Thread.Sleep(sleepSeconds * 1000);
 }
